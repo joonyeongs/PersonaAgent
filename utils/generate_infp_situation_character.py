@@ -14,7 +14,7 @@ with open("data/seed_data/mbti_profiles_infp.json", "r") as f:
     infp_data = json.load(f)
 
 infp_situation_dataset = list()
-for i in range(1):
+for i in range(len(infp_data)):
 
     prompt = f'''
     Personality:
@@ -22,8 +22,8 @@ for i in range(1):
 
     Imagine 8 dialouge situations that describe INFP's personality only based on the information above.
     The situations should be described concisely, focusing on the background and without telling the details.
+    Ensure that the worldview, setting, and concept of the fictional story is never reflected in the situation.
     Return in JSON format. "key" should be scene_[number] and "value" should be the situation description.
-
     '''
 
     message = client.messages.create(
