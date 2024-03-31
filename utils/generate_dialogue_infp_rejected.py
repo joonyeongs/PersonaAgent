@@ -4,6 +4,7 @@ import os
 import anthropic
 import json
 import time
+import re
 
 def concatenate_dialogues(dialogues):
     return '\n'.join(dialogues)
@@ -17,7 +18,8 @@ client = anthropic.Anthropic(
 )
 
 infp_dialogue_dataset = list()
-for i in range(1):
+for i in range(3):
+    start_of_dialogue = infp_dialogues[i]["dialogue"][0]
     dialogue_to_invert = concatenate_dialogues(infp_dialogues[i]["dialogue"])
 
     system_prompt='''
@@ -34,6 +36,9 @@ for i in range(1):
     The context of the dialogue remains the same, but the tone, approach, and underlying values in the responses from the INFP character should reflect these changes, ensuring a clear contrast to the original dialogue’s INFP characteristics.
     The dialogue that you should invert is:
     "{dialogue_to_invert}"
+
+    Start the conversation with the following response from the User:
+    "{start_of_dialogue}"
     '''
     success = False
 
@@ -52,7 +57,9 @@ for i in range(1):
         except Exception as e:
             print(e)
             time.sleep(20)
-    inverted_dialogue = message.content[0].text.split("\n")
+
+    split_dialogue = re.split(r'\n+', message.content[0].text)
+    inverted_dialogue = [line for line in split_dialogue]
     infp_dialogue_dataset.append({"feature":infp_dialogues[i]["feature"], "chosen": infp_dialogues[i]["dialogue"], "rejected": inverted_dialogue})
     print(f'finished_{i}')
 
