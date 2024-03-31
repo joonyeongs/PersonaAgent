@@ -4,11 +4,14 @@ import os
 import anthropic
 import json
 import time
+import random
 
 # load character data
-with open("infp_situation_character.json", "r") as f:
+with open("data/seed_data/infp_character_profile_general.json", "r") as f:
     infp_data = json.load(f)
 
+with open("data/seed_data/random_situations.json", "r") as f:
+    situation_data = json.load(f)
 
 load_dotenv()
 client = anthropic.Anthropic(
@@ -17,11 +20,11 @@ client = anthropic.Anthropic(
 
 
 infp_dialogue_dataset = list()
-for i in range(1):
-    character = infp_data[i]["text"]
+for i in range(len(infp_data)):
+    character = infp_data[i]["profile"]
 
     # TODO: Actually use the situation data
-    situations = infp_data[i]["scene"].values()
+    situations = list(situation_data.values())
 
     system_prompt='''
     Create in the following format where the conversation utterances are surrounded by quotes:
@@ -32,19 +35,21 @@ for i in range(1):
     Following this format is mandatory and very important. Do not mention the character's name.
     '''
 
-    for situation in situations:
+    for _ in range(8):
+        situation = random.choice(situations)
         prompt = f'''Begin by exploring the broad characteristics of the INFP personality type, known for their deep empathy, creativity, introspection, and preference for meaningful connections over superficial interactions. INFPs are often seen as idealistic and passionate, with a unique ability to see the good in people and situations. They are driven by their values and seek to understand themselves and others on a profound level. INFPs are also known for their adaptability and open-mindedness, allowing them to navigate complex emotional landscapes with grace. 
 
         Given these traits, generate a dialogue between an arbitrary person and a character from a fictional story whose personality type is INFP and has following traits: 
         “{character}"
         
-        The dialogue should be insightful and reflective of the character’s personality, showcasing their empathetic, introspective, and idealistic nature of INFP in different contexts. Ensure that the dialogues illustrate the character's nuanced approach to its trait. Aim for a natural progression in the dialogues, from introduction to a deeper exploration of the topic, effectively capturing the essence of the INFP personality through this specific lens. Ensure that the worldview, setting, and concept of the fictional story is never reflected in the dialogue at all. It is important that no word related to such worldview, character, or setting is used in the dialogue as well as the word “INFP”. 
+        The dialogue should be insightful and reflective of the character’s personality, showcasing their empathetic, introspective, and idealistic nature of INFP in different contexts. Ensure that the dialogues illustrate the character's nuanced approach to its trait. Aim for a natural progression in the dialogues, from introduction to a deeper exploration of the topic, effectively capturing the essence of the INFP personality through this specific lens. Don't mention the word "INFP" in the conversation.
 
         This conversation is happening in this situation:
         "{situation}"
         '''
         success = False
 
+        error_count = 0
         while success == False:
             try:
                 message = client.messages.create(
@@ -53,16 +58,19 @@ for i in range(1):
                     max_tokens=1000,
                     temperature=1,
                     messages=[
-                        {"role": "user", "content": f"{prompt}"}
+                    {"role": "user", "content": f"{prompt}"}
                     ]
                 )
                 success = True
             except Exception as e:
                 print(e)
+                error_count += 1
+                if error_count >= 5:
+                    break
                 time.sleep(20)
         dialogue = message.content[0].text.split("\n\n")
         infp_dialogue_dataset.append({"character": character, "scene": situation, "dialogue": dialogue})
-    print(f'finished_{i}')
+        print(f'finished_{i}')
 
 
 with open("data/generated_data/infp_character_situation_dialogues.json", "w") as f:
