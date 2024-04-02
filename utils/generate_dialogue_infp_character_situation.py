@@ -6,6 +6,7 @@ import anthropic
 import json
 import time
 import random
+import sys
 
 def generate_dialgue(character, situation):
     system_prompt='''
@@ -57,9 +58,9 @@ client = anthropic.Anthropic(
 
 
 infp_dialogue_dataset = list()
-for _ in range(1):
-    for i in range(0, 1, 3):
-        print(f"Generating dialogue for character {i+1} to {i+3} of {len(infp_data)}")
+for round in range(8):
+    for i in range(0, len(infp_data), 3):
+        print(f"Generating dialogue for character {i+1} to {i+3} of {len(infp_data)} in Round {round+1}")
         success = False
         error_count = 0
         situations = list(situation_data.values())
@@ -80,9 +81,10 @@ for _ in range(1):
                 print(e)
                 error_count += 1
                 if error_count >= 5:
-                    break
+                    with open("data/generated_data/infp_character_situation_dialogues.json", "w") as f:
+                        json.dump(infp_dialogue_dataset, f, indent=4)
+                    sys.exit("Too many errors, exiting")
                 time.sleep(20)
-
 
 with open("data/generated_data/infp_character_situation_dialogues.json", "w") as f:
     json.dump(infp_dialogue_dataset, f, indent=4)
