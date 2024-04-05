@@ -60,10 +60,8 @@ for statement in mbti_statements:
     print(f'finished')
 
 
-with open("data/generated_data/infp_feature_dialogues.json", "w") as f:
+with open("data/generated_data/mbti_openended_questions.json", "w") as f:
     json.dump(mbti_openended_questions, f, indent=4)
-
-
 
 
 
