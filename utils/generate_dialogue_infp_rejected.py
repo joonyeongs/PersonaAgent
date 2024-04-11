@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from joblib import Parallel, delayed
+from create_prompt_and_chosen import preprocess_data
 
 import os
 import anthropic
@@ -42,7 +43,7 @@ def reverse_response(prompt, chosen):
 
 
 
-with open("data/generated_data/infp_character_situation_prompt_chosen.json", "r") as f:
+with open("data/generated_data/infp_character_situation_dialogues.json", "r") as f:
     dataset = json.load(f)
 
 load_dotenv()
@@ -52,32 +53,8 @@ client = anthropic.Anthropic(
 
 start = time.time()
 
-'''
-for i in range(0, len(prompt_chosen), 5):
-    print(f"Generating dialogue for character {i+1} to {i+5} of {len(prompt_chosen)}")
-    success = False
-    error_count = 0
+dataset = preprocess_data(dataset)
 
-    while not success:
-        try:
-            outputs = Parallel(n_jobs=3, verbose=100, prefer="threads")(
-                delayed(generate_dialgue)(
-                    infp_dialogue=infp_dialogue
-                )
-                for infp_dialogue in infp_dialogues[i: i+5]
-            )
-            for output in outputs:
-                infp_dialogue_dataset.append(output)
-            success = True
-        except Exception as e:
-            print(e)
-            error_count += 1
-            if error_count >= 5:
-                with open("data/generated_data/infp_pair_data.json", "w") as f:
-                    json.dump(infp_dialogue_dataset, f, indent=4)
-                sys.exit("Too many errors, exiting")
-            time.sleep(20)
-'''
 pair_data = []
 for i, data in enumerate(dataset):
     print(f"Generating dialogue for character {i+1} of {len(dataset)}")
@@ -99,7 +76,7 @@ for i, data in enumerate(dataset):
 
     pair_data.append({"prompt": prompt, "chosen": chosen, "rejected": rejected})
 
-    if len(pair_data) > 9:
+    if len(pair_data) > 4:
         break
 
 

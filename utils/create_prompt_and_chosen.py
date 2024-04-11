@@ -27,22 +27,16 @@ def create_pairs(dialogue):
     return pairs
 
 
-with open('data/generated_data/infp_character_situation_dialogues.json', 'r') as f:
-    character_situation = json.load(f)
+def preprocess_data(dataset):
+    prompt_and_chosen_data = []
 
-
-total_data = character_situation
-
-prompt_and_chosen_data = []
-
-for data in total_data:
-    if data["dialogue"][0].find("\"User") == -1:
-        data["dialogue"] = data["dialogue"][1:]
+    for data in dataset:
+        if data["dialogue"][0].find("\"User") == -1:
+            data["dialogue"] = data["dialogue"][1:]
+        
+        cleaned_dialogue = [clean_data(string_to_clean) for string_to_clean in data["dialogue"]]  
+      
+        prompt_and_chosen = create_pairs(cleaned_dialogue)
+        prompt_and_chosen_data.extend(prompt_and_chosen)
     
-    cleaned_dialogue = [clean_data(string_to_clean) for string_to_clean in data["dialogue"]]  
-  
-    prompt_and_chosen = create_pairs(cleaned_dialogue)
-    prompt_and_chosen_data.extend(prompt_and_chosen)
- 
-with open('data/generated_data/infp_character_situation_prompt_chosen.json', 'w') as f:
-    json.dump(prompt_and_chosen_data, f, indent=4)
+    return prompt_and_chosen_data
