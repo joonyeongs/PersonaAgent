@@ -31,7 +31,7 @@ def llama2(system, desired_prompt):
 
 
 
-def llama3(system, desired_prompt):
+def llama3(system, desired_prompt, messages):
     model_directory = '/home/vqa/model-weights/llama3/infp/checkpoint-400'
 
     # Load the tokenizer and model
@@ -43,10 +43,9 @@ def llama3(system, desired_prompt):
         
     )
     EOS_TOKEN = tokenizer.eos_token
-
-    messages = []
-    #messages.append({"role": "system", "content": "You have a INFP personality"})
-    messages.append({"role": "system", "content": system}) 
+    
+    if messages[0]["role"] != "system":
+         messages.append({"role": "system", "content": system})   
     messages.append({"role": "user", "content": desired_prompt})        
     
 
@@ -73,5 +72,6 @@ def llama3(system, desired_prompt):
     )
     response = outputs[0][input_ids.shape[-1]:]
     real_response = tokenizer.decode(response, skip_special_tokens=False)
-    print(real_response)
+    #print(real_response)
+    messages.append({"role": "assistant", "content": real_response})
     return real_response
