@@ -2,3 +2,4 @@
 data/
 _unsloth_sentencepiece_temp
 .pyc
+__pycache__/
