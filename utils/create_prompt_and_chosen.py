@@ -31,7 +31,7 @@ def preprocess_data(dataset):
     prompt_and_chosen_data = []
 
     for data in dataset:
-        if data["dialogue"][0].find("\"User") == -1:
+        if not data["dialogue"][0].startswith("\"User\":"):
             data["dialogue"] = data["dialogue"][1:]
         
         cleaned_dialogue = [clean_data(string_to_clean) for string_to_clean in data["dialogue"]]  
