@@ -10,11 +10,17 @@ from datasets import Dataset
 mbtis = ['infp', 'infj', 'entj', 'estj']
 system_prompts = [infp_system_prompt, infj_system_prompt, entj_system_prompt, estj_system_prompt]
 
+def get_device_map() -> str:
+    return 'cuda' if torch.cuda.is_available() else 'cpu'
+
+device = get_device_map()
+
 for mbti, system_prompt in zip(mbtis, system_prompts) :
     input_dir = f"data/generated_data/cleaned_data/{mbti}_pair_data_cleaned.json"
+    #input_dir = f"data/generated_data/{mbti}_pair_data_cleaned.json"
     cache_dir = "/home/vqa/model-weights/llama3"
-    output_dir = f"/home/vqa/model-weights/llama3/{mbti}_cleaned"
-    model_dir = f"/home/vqa/model-weights/llama3/infp_cleaned/models--unsloth--llama-3-8b"
+    output_dir = f"/home/vqa/model-weights/llama3/low_lr/{mbti}_cleaned"
+    #model_dir = f"/home/vqa/model-weights/llama3/infp_cleaned/models--unsloth--llama-3-8b"
 
     with open(input_dir, "r", encoding='utf-8') as f:
       dataset = json.load(f)
@@ -27,13 +33,16 @@ for mbti, system_prompt in zip(mbtis, system_prompts) :
         #model_name = "unsloth/llama-2-7b-chat",
         #model_name = model_dir,
         model_name = "unsloth/llama-3-8b-instruct",
+        device_map=device,
         max_seq_length = max_seq_length,
         dtype = torch.bfloat16, 
         load_in_4bit = False, 
         token = HUGGINGFACE_TOKEN,
-        cache_dir=cache_dir,
-        use_cache=True
+        #cache_dir=cache_dir,
+        use_cache=True,
     )
+
+    model.to(device)
     #print('loaded ', model_name)
     EOS_TOKEN = tokenizer.eos_token
 
@@ -50,6 +59,7 @@ for mbti, system_prompt in zip(mbtis, system_prompts) :
           dataset[i][key] = dataset[i][key] + EOS_TOKEN             #'<|eot_id|>'
         #print('this type', type(dataset[i][key])) 
 
+    
 
 
       
@@ -77,13 +87,13 @@ for mbti, system_prompt in zip(mbtis, system_prompts) :
     training_args = TrainingArguments(per_device_train_batch_size=8,
                                       gradient_accumulation_steps = 16,
                                       output_dir=output_dir,    ### change the path in respect to your local directory
-                                      learning_rate = 1e-4,
+                                      learning_rate = 1e-6,
                                       weight_decay=0.01,
-                                      lr_scheduler_type='linear',
+                                      lr_scheduler_type='cosine',
                                       run_name="infp_llama38B",
                                       fp16 = not torch.cuda.is_bf16_supported(),
                                       bf16 = torch.cuda.is_bf16_supported(),
-                                      num_train_epochs=5,
+                                      num_train_epochs=3,
                                       logging_steps=1,
                                       split_batches = False,
                                       use_mps_device = False,

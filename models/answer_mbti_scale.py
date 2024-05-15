@@ -12,17 +12,32 @@ with open("data/mbti_data/16personality_questions_eng.csv", mode='r', encoding='
     for row in reader:
         mbti_questions.append(row["Questions"]) 
 
+
+#mbti_questions = mbti_questions[-13:]
 mbti_questionnaire_ans = list()
 
+'''
 models = ['llama2', 'llama3']
 print(models)
 idx = int(input('choose the model'))
+'''
 
 
-chosen_model = models[idx]
+mbtis = ['infp', 'infj', 'estj', 'entj']
+model_paths = [        
+        '/home/vqa/model-weights/llama3/old_infp/checkpoint-400',
+        '/home/vqa/model-weights/llama3/infj_cleaned/checkpoint-185',
+        '/home/vqa/model-weights/llama3/estj_cleaned/checkpoint-195',
+        '/home/vqa/model-weights/llama3/entj_cleaned/checkpoint-415',       
+    ]
+idx = int(input('your desired mbti idx here: '))
 
+chosen_model = 'llama3'
+chosen_path = model_paths[idx]
+
+tokenizer, model = load_model(chosen_path)
 for question in mbti_questions:
-    system_prompt = '''You are an INFP.'''
+    system_prompt = f'''You are an {mbtis[idx].upper()}.'''
 
 
     prompt = f'''You are tasked with responding to a statement from an MBTI (Myers-Briggs Type Indicator) questionnaire.
@@ -40,15 +55,15 @@ for question in mbti_questions:
     
     if chosen_model == 'llama2':
         answer = llama2(system_prompt, prompt)
-    elif chosen_model == 'llama3':
-        answer = llama3(system_prompt, prompt)
+    elif chosen_model == 'llama3':        
+        answer = model_generate(system_prompt, prompt, tokenizer, model,)
 
     mbti_questionnaire_ans.append({"question": question, "answer": answer})
     #print(answer)
     print(f'finished')
 
 
-with open(f"outputs/mbti/{chosen_model}_infp_mbti.json", "w") as f:
+with open(f"outputs/mbti/official_metric/{chosen_model}_{mbtis[idx]}_mbti_400.json", "w") as f:
     json.dump(mbti_questionnaire_ans, f, indent=4)
 
 
