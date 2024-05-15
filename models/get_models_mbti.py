@@ -127,30 +127,37 @@ if __name__ == '__main__':
     )
 
     # * 设定待测试的模型 & tokenizer
-    model_paths = [
-        '/home/vqa/00_backup/model-weights/llama2/infp/checkpoint-400',
-        '/home/vqa/00_backup/model-weights/llama3/infp/checkpoint-400',        
+    model_paths = [        
+        '/home/vqa/model-weights/llama3/infp_cleaned/checkpoint-400',
+        '/home/vqa/model-weights/llama3/infj_cleaned/checkpoint-185',
+        '/home/vqa/model-weights/llama3/estj_cleaned/checkpoint-195',
+        '/home/vqa/model-weights/llama3/entj_cleaned/checkpoint-415',       
     ]
 
     tokenizers = [
-        '/home/vqa/00_backup/model-weights/llama2/infp/checkpoint-400',
-        '/home/vqa/00_backup/model-weights/llama3/infp/checkpoint-400',  
+       '/home/vqa/model-weights/llama3/infp_cleaned/checkpoint-400',
+        '/home/vqa/model-weights/llama3/infj_cleaned/checkpoint-185',
+        '/home/vqa/model-weights/llama3/estj_cleaned/checkpoint-195',
+        '/home/vqa/model-weights/llama3/entj_cleaned/checkpoint-415',     
     ]
 
-    models = ['llama2', 'llama3']
+    mbtis = ['infp', 'infj', 'estj', 'entj']
+    #models = ['llama2', 'llama3']
     model, tokenizer, llms_mbti = None, None, {}
-    for model_path, tokenizer_path, model_name in zip(model_paths, tokenizers, models):
+    for model_path, tokenizer_path, mbti in zip(model_paths[1:2], tokenizers[1:2], mbtis[1:2]):
         
+        model_name = 'llama3'
         print('Model: ', model_path)
         print('Tokenizer: ', tokenizer_path)
 
-        tokenizer = AutoTokenizer.from_pretrained(model_path, use_cache=True)
+        tokenizer = AutoTokenizer.from_pretrained(model_path, device_map='auto', 
+                                                  cache_dir="/home/vqa/model-weights/llama3", use_cache=True)
 
         model = AutoModelForCausalLM.from_pretrained(
             model_path,
             device_map='auto',
             trust_remote_code=True,
-            cache_dir="/home/vqa/00_backup/model-weights/llama3",
+            cache_dir="/home/vqa/model-weights/llama3",
             use_cache=True,
         )
 
@@ -159,7 +166,7 @@ if __name__ == '__main__':
             tokenizer
         )
         
-        SAVE_PATH = f'outputs/mbti/new_{model_name}_infp_mbti.json'
+        SAVE_PATH = f'outputs/mbti/chinese_metric/mbti_score_{model_name}_{mbti}_mbti.json'
         llms_mbti[model_path.split('/')[-1]] = mbti_res
         json.dump(llms_mbti, open(SAVE_PATH, 'w', encoding='utf8'))
     

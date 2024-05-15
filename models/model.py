@@ -29,8 +29,6 @@ def llama2(system, desired_prompt):
     return tokenizer.decode(output[0][input_ids.shape[-1]:])
 
 
-
-
 def llama3(system, desired_prompt, messages):
     model_directory = '/home/vqa/model-weights/llama3/infp/checkpoint-400'
 
@@ -45,6 +43,57 @@ def llama3(system, desired_prompt, messages):
     EOS_TOKEN = tokenizer.eos_token
     
     if messages[0]["role"] != "system":
+         messages.append({"role": "system", "content": system})   
+    messages.append({"role": "user", "content": desired_prompt})        
+    
+
+    input_ids = tokenizer.apply_chat_template(
+        messages,
+        add_generation_prompt=True,
+        return_tensors="pt"
+    ).to(model.device)
+
+    terminators = [
+        tokenizer.eos_token_id,
+        tokenizer.convert_tokens_to_ids("<|eot_id|>")
+    ]
+
+    outputs = model.generate(
+        input_ids,
+        max_length=128, 
+        max_new_tokens=256,
+        eos_token_id=terminators,
+        do_sample=True,
+        temperature=0.2,
+        top_p=0.9,
+        use_cache=True
+    )
+    response = outputs[0][input_ids.shape[-1]:]
+    real_response = tokenizer.decode(response, skip_special_tokens=False)
+    #print(real_response)
+    messages.append({"role": "assistant", "content": real_response})
+    return real_response
+
+
+
+def load_model(model_directory):
+    tokenizer = AutoTokenizer.from_pretrained(model_directory, cache_dir="/home/vqa/model-weights/llama3", use_cache=True)
+    model = AutoModelForCausalLM.from_pretrained(
+        model_directory,
+        torch_dtype=torch.bfloat16,
+        device_map="auto",
+        cache_dir="/home/vqa/model-weights/llama3", use_cache=True,        
+    )
+    return tokenizer, model
+
+
+def model_generate(system, desired_prompt, tokenizer, model, messages=[]):
+    #model_directory = '/home/vqa/model-weights/llama3/infp/checkpoint-400'
+    messages = []
+    EOS_TOKEN = tokenizer.eos_token
+    
+    if len(messages) == 0 or messages[0]["role"] != "system":
+         print('system message appended')
          messages.append({"role": "system", "content": system})   
     messages.append({"role": "user", "content": desired_prompt})        
     
