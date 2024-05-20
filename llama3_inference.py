@@ -1,16 +1,16 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 
-model_directory = '/home/vqa/00_backup/model-weights/llama3/infp_cleaned/checkpoint-400'
+model_directory = '/home/vqa/00_backup/model-weights/llama3/infp_cleaned/checkpoint-240'
 
 
 # Load the tokenizer and model
-tokenizer = AutoTokenizer.from_pretrained(model_directory, cache_dir="/home/vqa/00_backup/model-weights/llama3", use_cache=True)
+tokenizer = AutoTokenizer.from_pretrained(model_directory, cache_dir="/home/vqa/model-weights/llama3", use_cache=True)
 model = AutoModelForCausalLM.from_pretrained(
     model_directory,
     torch_dtype=torch.bfloat16,
     device_map="auto",
-    cache_dir="/home/vqa/00_backup/model-weights/llama3", 
+    #cache_dir="/home/vqa/model-weights/llama3", 
     use_cache=True,    
 )
 

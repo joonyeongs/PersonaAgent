@@ -24,4 +24,4 @@ def llama2_response(desired_prompt):
     output = model.generate(input_ids, max_length=500)
     print(tokenizer.decode(output[0][input_ids.shape[-1]:], skip_special_tokens=True))
 
-    return tokenizer.decode(output[0][input_ids.shape[-1]:]
+    return tokenizer.decode(output[0][input_ids.shape[-1]:])

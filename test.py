@@ -1,7 +1,7 @@
 import json
 import re
 
-with open("outputs/mbti/llama3_infp_mbti.json", "r", encoding='utf-8') as f:
+with open("outputs/mbti/official_metric/llama3_machine_infp_mbti.json", "r", encoding='utf-8') as f:
   dataset = json.load(f)
 
 
@@ -12,10 +12,10 @@ for info in dataset:
   if match:
     print(info['question'], match.group(0))
     count += 1
+  else:
+    print(info)
 
 print(len(dataset), count)
-
-
 
 
 

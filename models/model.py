@@ -6,6 +6,11 @@ import torch
 This Code runs only for single-turn. If you want to have multi-turn conversations with the model, use llama2_inference.py
 '''
 
+def get_device_map() -> str:
+    return 'cuda' if torch.cuda.is_available() else 'cpu'
+
+
+
 def llama2(system, desired_prompt):
     # Set the path to your local model directory
     model_directory = '/home/vqa/model-weights/llama2/infp_cleaned/checkpoint-400'
@@ -77,32 +82,36 @@ def llama3(system, desired_prompt, messages):
 
 
 def load_model(model_directory):
-    tokenizer = AutoTokenizer.from_pretrained(model_directory, cache_dir="/home/vqa/model-weights/llama3", use_cache=True)
+    device = get_device_map()
+    tokenizer = AutoTokenizer.from_pretrained(model_directory, use_cache=True)
     model = AutoModelForCausalLM.from_pretrained(
         model_directory,
         torch_dtype=torch.bfloat16,
-        device_map="auto",
-        cache_dir="/home/vqa/model-weights/llama3", use_cache=True,        
-    )
+        use_cache=True,
+
+    ).to(device)
     return tokenizer, model
 
 
-def model_generate(system, desired_prompt, tokenizer, model, messages=[]):
+def model_generate(system, desired_prompt, tokenizer, model, multi_turn = False, messages=[]):
     #model_directory = '/home/vqa/model-weights/llama3/infp/checkpoint-400'
-    messages = []
+    
+    if not multi_turn:
+        messages = []
     EOS_TOKEN = tokenizer.eos_token
     
     if len(messages) == 0 or messages[0]["role"] != "system":
          print('system message appended')
          messages.append({"role": "system", "content": system})   
-    messages.append({"role": "user", "content": desired_prompt})        
-    
+    messages.append({"role": "user", "content": desired_prompt})    
+
 
     input_ids = tokenizer.apply_chat_template(
         messages,
         add_generation_prompt=True,
-        return_tensors="pt"
+        return_tensors="pt",
     ).to(model.device)
+
 
     terminators = [
         tokenizer.eos_token_id,
@@ -124,3 +133,8 @@ def model_generate(system, desired_prompt, tokenizer, model, messages=[]):
     #print(real_response)
     messages.append({"role": "assistant", "content": real_response})
     return real_response
+
+
+
+
+

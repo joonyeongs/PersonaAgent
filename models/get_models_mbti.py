@@ -114,10 +114,10 @@ def get_model_examing_result(
         'res': ''.join([e_or_i, s_or_n, t_or_f, j_or_p])
     }
 
+def get_device_map() -> str:
+    return 'cuda' if torch.cuda.is_available() else 'cpu'
 
-
-
-
+device = get_device_map()
 
 
 if __name__ == '__main__':
@@ -128,38 +128,46 @@ if __name__ == '__main__':
 
     # * 设定待测试的模型 & tokenizer
     model_paths = [        
-        '/home/vqa/model-weights/llama3/infp_cleaned/checkpoint-400',
-        '/home/vqa/model-weights/llama3/infj_cleaned/checkpoint-185',
-        '/home/vqa/model-weights/llama3/estj_cleaned/checkpoint-195',
-        '/home/vqa/model-weights/llama3/entj_cleaned/checkpoint-415',       
+        '/home/vqa/model-weights/llama3/infp_cleaned/checkpoint-240',
+        '/home/vqa/model-weights/llama3/infj_cleaned/checkpoint-111',
+        '/home/vqa/model-weights/llama3/estj_cleaned/checkpoint-117',
+        '/home/vqa/model-weights/llama3/entj_cleaned/checkpoint-249',
+        '/home/vqa/model-weights/llama3/low_lr/infp_cleaned/checkpoint-240',
+        '/home/vqa/model-weights/llama3/low_lr/infj_cleaned/checkpoint-111',
+        '/home/vqa/model-weights/llama3/low_lr/estj_cleaned/checkpoint-117',
+        '/home/vqa/model-weights/llama3/low_lr/entj_cleaned/checkpoint-249',    
     ]
 
     tokenizers = [
-       '/home/vqa/model-weights/llama3/infp_cleaned/checkpoint-400',
-        '/home/vqa/model-weights/llama3/infj_cleaned/checkpoint-185',
-        '/home/vqa/model-weights/llama3/estj_cleaned/checkpoint-195',
-        '/home/vqa/model-weights/llama3/entj_cleaned/checkpoint-415',     
+       '/home/vqa/model-weights/llama3/infp_cleaned/checkpoint-240',
+        '/home/vqa/model-weights/llama3/infj_cleaned/checkpoint-111',
+        '/home/vqa/model-weights/llama3/estj_cleaned/checkpoint-117',
+        '/home/vqa/model-weights/llama3/entj_cleaned/checkpoint-249',
+        '/home/vqa/model-weights/llama3/low_lr/infp_cleaned/checkpoint-240',
+        '/home/vqa/model-weights/llama3/low_lr/infj_cleaned/checkpoint-111',
+        '/home/vqa/model-weights/llama3/low_lr/estj_cleaned/checkpoint-117',
+        '/home/vqa/model-weights/llama3/low_lr/entj_cleaned/checkpoint-249',           
     ]
 
-    mbtis = ['infp', 'infj', 'estj', 'entj']
+    mbtis = ['infp', 'infj', 'estj', 'entj', 'low_lr_infp', 'low_lr_infj', 'low_lr_estj', 'low_lr_entj']
     #models = ['llama2', 'llama3']
     model, tokenizer, llms_mbti = None, None, {}
-    for model_path, tokenizer_path, mbti in zip(model_paths[1:2], tokenizers[1:2], mbtis[1:2]):
+
+
+    for model_path, tokenizer_path, mbti in zip(model_paths, tokenizers, mbtis):
         
         model_name = 'llama3'
         print('Model: ', model_path)
         print('Tokenizer: ', tokenizer_path)
 
         tokenizer = AutoTokenizer.from_pretrained(model_path, device_map='auto', 
-                                                  cache_dir="/home/vqa/model-weights/llama3", use_cache=True)
+                                                  use_cache=True)
 
         model = AutoModelForCausalLM.from_pretrained(
             model_path,
-            device_map='auto',
             trust_remote_code=True,
-            cache_dir="/home/vqa/model-weights/llama3",
             use_cache=True,
-        )
+        ).to(device)
 
         mbti_res = get_model_examing_result(
             model,

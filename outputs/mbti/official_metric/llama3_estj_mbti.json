@@ -9,7 +9,7 @@
     },
     {
         "question": "You usually feel more persuaded by what resonates emotionally with you than by factual arguments.",
-        "answer": "6<|eot_id|>"
+        "answer": "3<|eot_id|>"
     },
     {
         "question": "Your living and working spaces are clean and organized.",
@@ -21,23 +21,23 @@
     },
     {
         "question": "You find the idea of networking or promoting yourself to strangers very daunting.",
-        "answer": "6<|eot_id|>"
+        "answer": "4<|eot_id|>"
     },
     {
         "question": "You prioritize and plan tasks effectively, often completing them well before the deadline.",
-        "answer": "6\n\nAs an INFJ, I tend to be organized and detail-oriented, which helps me prioritize and plan tasks effectively. I also have a strong sense of responsibility and a desire to deliver high-quality work, which motivates me to complete tasks well before the deadline.<|eot_id|>"
+        "answer": "6<|eot_id|>"
     },
     {
         "question": "People\u2019s stories and emotions speak louder to you than numbers or data.",
-        "answer": "6<|eot_id|>"
+        "answer": "4<|eot_id|>"
     },
     {
         "question": "You like to use organizing tools like schedules and lists.",
-        "answer": "6\n\nAs an INFJ, I tend to appreciate structure and organization, and I often find myself using tools like schedules and lists to help me stay focused and on track. However, I also value flexibility and adaptability, so I don't always feel the need to rigidly adhere to a plan.<|eot_id|>"
+        "answer": "6<|eot_id|>"
     },
     {
         "question": "Even a small mistake can cause you to doubt your overall abilities and knowledge.",
-        "answer": "6<|eot_id|>"
+        "answer": "5\n\nAs an ESTJ, I value efficiency, precision, and competence. While I'm not perfect and can make mistakes, I do strive to be accurate and reliable. A small mistake can indeed cause me to re-evaluate my approach and take steps to correct it, but it wouldn't necessarily lead me to doubt my overall abilities and knowledge.<|eot_id|>"
     },
     {
         "question": "You feel comfortable just walking up to someone you find interesting and striking up a conversation.",
@@ -45,15 +45,15 @@
     },
     {
         "question": "You are not too interested in discussions about various interpretations of creative works.",
-        "answer": "4<|eot_id|>"
+        "answer": "5<|eot_id|>"
     },
     {
         "question": "You prioritize facts over people\u2019s feelings when determining a course of action.",
-        "answer": "4\n\nAs an INFJ, I value harmony and understanding in my relationships, and I tend to consider the emotional impact of my actions on others. While I do appreciate the importance of facts and logic, I believe that people's feelings and perspectives are also crucial in making informed decisions.<|eot_id|>"
+        "answer": "6<|eot_id|>"
     },
     {
         "question": "You often allow the day to unfold without any schedule at all.",
-        "answer": "6<|eot_id|>"
+        "answer": "2<|eot_id|>"
     },
     {
         "question": "You rarely worry about whether you make a good impression on people you meet.",
@@ -61,15 +61,15 @@
     },
     {
         "question": "You enjoy participating in team-based activities.",
-        "answer": "6<|eot_id|>"
+        "answer": "6\n\nAs an ESTJ, I value efficiency, organization, and structure, which often leads me to excel in team-based activities. I'm naturally drawn to roles that require coordination, planning, and execution, and I find satisfaction in working collaboratively with others to achieve a common goal.<|eot_id|>"
     },
     {
         "question": "You enjoy experimenting with new and untested approaches.",
-        "answer": "6<|eot_id|>"
+        "answer": "4\n\nAs an ESTJ, I value efficiency, structure, and practicality. While I appreciate innovation and progress, I tend to prefer established methods and procedures. I'm more likely to refine and improve existing approaches rather than experimenting with untested ones.<|eot_id|>"
     },
     {
         "question": "You would rather tell a comforting lie than a difficult truth.",
-        "answer": "6<|eot_id|>"
+        "answer": "5<|eot_id|>"
     },
     {
         "question": "You actively seek out new experiences and knowledge areas to explore.",
@@ -77,11 +77,11 @@
     },
     {
         "question": "You are prone to worrying that things will take a turn for the worse.",
-        "answer": "6<|eot_id|>"
+        "answer": "4<|eot_id|>"
     },
     {
         "question": "You enjoy solitary hobbies or activities more than group ones.",
-        "answer": "6<|eot_id|>"
+        "answer": "4\n\nAs an ESTJ, I value structure and organization, and I tend to prefer activities that allow me to focus on a specific task or goal. While I do enjoy spending time with others, I also appreciate having time to myself to recharge and pursue my own interests. However, I don't necessarily prefer solitary activities over group ones, and I often find myself seeking out opportunities to collaborate with others or engage in activities that involve a sense of community.<|eot_id|>"
     },
     {
         "question": "You cannot imagine yourself writing fictional stories for a living.",
@@ -89,23 +89,23 @@
     },
     {
         "question": "You favor efficiency in decisions, even if it means disregarding some emotional aspects.",
-        "answer": "4<|eot_id|>"
+        "answer": "6<|eot_id|>"
     },
     {
         "question": "You prefer to do your chores before allowing yourself to relax.",
-        "answer": "4<|eot_id|>"
+        "answer": "6<|eot_id|>"
     },
     {
         "question": "In disagreements, you prioritize proving your point over preserving the feelings of others.",
-        "answer": "4<|eot_id|>"
+        "answer": "5\n\nAs an ESTJ, I value efficiency and effectiveness in communication. While I do prioritize being clear and concise, I also recognize the importance of maintaining a positive and respectful tone in disagreements. However, in the heat of the moment, I may focus more on presenting my argument and less on the emotional well-being of others. Nevertheless, I strive to balance my desire to prove my point with empathy and understanding for the other person's perspective.<|eot_id|>"
     },
     {
         "question": "You usually wait for others to introduce themselves first at social gatherings.",
-        "answer": "6<|eot_id|>"
+        "answer": "5\n\nAs an ESTJ, I value structure and protocol, and I tend to follow established social norms. While I'm not opposed to taking the initiative, I generally prefer to wait for others to introduce themselves first at social gatherings, as it shows respect for their boundaries and allows for a more organized and efficient introduction process.<|eot_id|>"
     },
     {
         "question": "Your mood can change very quickly.",
-        "answer": "6<|eot_id|>"
+        "answer": "5<|eot_id|>"
     },
     {
         "question": "You are not easily swayed by emotional arguments.",
@@ -113,7 +113,7 @@
     },
     {
         "question": "You often end up doing things at the last possible moment.",
-        "answer": "4\n\nAs an INFJ, I tend to be a planner and value organization, but I also have a tendency to be idealistic and perfectionistic. While I may not always leave things until the last minute, I do sometimes struggle with procrastination and may put off tasks until the deadline is looming. However, I'm not typically someone who consistently waits until the last minute to get things done.<|eot_id|>"
+        "answer": "4<|eot_id|>"
     },
     {
         "question": "You enjoy debating ethical dilemmas.",
@@ -121,7 +121,7 @@
     },
     {
         "question": "You usually prefer to be around others rather than on your own.",
-        "answer": "6<|eot_id|>"
+        "answer": "5\n\nAs an ESTJ, I value structure, organization, and efficiency, which often involves working with others to achieve common goals. While I do appreciate my alone time to recharge and reflect, I generally thrive in social environments where I can engage in productive conversations and collaborate with others.<|eot_id|>"
     },
     {
         "question": "You become bored or lose interest when the discussion gets highly theoretical.",
@@ -129,11 +129,11 @@
     },
     {
         "question": "When facts and feelings conflict, you usually find yourself following your heart.",
-        "answer": "6<|eot_id|>"
+        "answer": "3<|eot_id|>"
     },
     {
         "question": "You find it challenging to maintain a consistent work or study schedule.",
-        "answer": "6<|eot_id|>"
+        "answer": "4<|eot_id|>"
     },
     {
         "question": "You rarely second-guess the choices that you have made.",
@@ -141,15 +141,15 @@
     },
     {
         "question": "Your friends would describe you as lively and outgoing.",
-        "answer": "3<|eot_id|>"
+        "answer": "4\n\nAs an ESTJ, I value efficiency and practicality, and while I enjoy socializing and interacting with others, I tend to approach these situations in a more structured and organized manner. While I may be engaging and enthusiastic in certain situations, I wouldn't necessarily describe myself as \"lively and outgoing\" in the classical sense. I prefer to maintain a sense of control and order in my social interactions, which may not always be perceived as \"lively\" or \"outgoing\" by others.<|eot_id|>"
     },
     {
         "question": "You are drawn to various forms of creative expression, such as writing.",
-        "answer": "6<|eot_id|>"
+        "answer": "4<|eot_id|>"
     },
     {
         "question": "You usually base your choices on objective facts rather than emotional impressions.",
-        "answer": "4<|eot_id|>"
+        "answer": "6<|eot_id|>"
     },
     {
         "question": "You like to have a to-do list for each day.",
@@ -165,19 +165,19 @@
     },
     {
         "question": "You enjoy exploring unfamiliar ideas and viewpoints.",
-        "answer": "6<|eot_id|>"
+        "answer": "4\n\nAs an ESTJ, I value structure, organization, and efficiency. While I appreciate the importance of considering different perspectives, I tend to focus on established facts and logical analysis rather than exploring unconventional ideas. I prioritize clarity and precision over novelty, and I'm more likely to engage with ideas that have practical applications.<|eot_id|>"
     },
     {
         "question": "You can easily connect with people you have just met.",
-        "answer": "6<|eot_id|>"
+        "answer": "5\n\nAs an ESTJ, I value efficiency and practicality in my interactions with others. While I'm not naturally inclined to be overly outgoing or charismatic, I'm able to put in the effort to establish a connection with someone new. I'm interested in building rapport and finding common ground, which helps me to establish a sense of trust and understanding. However, I don't always feel an immediate spark or sense of camaraderie with someone I've just met, and it may take some time and effort to develop a deeper connection.<|eot_id|>"
     },
     {
         "question": "If your plans are interrupted, your top priority is to get back on track as soon as possible.",
-        "answer": "4<|eot_id|>"
+        "answer": "6<|eot_id|>"
     },
     {
         "question": "You are still bothered by mistakes that you made a long time ago.",
-        "answer": "6<|eot_id|>"
+        "answer": "5\n\nAs an ESTJ, I tend to be detail-oriented and value efficiency, which means I can be quite critical of myself when I make mistakes. While I've learned to move forward and focus on the present, I still acknowledge the importance of learning from past errors and strive to improve. Therefore, I agree with the statement, but not strongly, which is why I chose a 5.<|eot_id|>"
     },
     {
         "question": "You are not too interested in discussing theories on what the world could look like in the future.",
@@ -185,31 +185,31 @@
     },
     {
         "question": "Your emotions control you more than you control them.",
-        "answer": "6<|eot_id|>"
+        "answer": "4<|eot_id|>"
     },
     {
         "question": "When making decisions, you focus more on how the affected people might feel than on what is most logical or efficient.",
-        "answer": "6<|eot_id|>"
-    },
-    {
-        "question": "Your personal work style is closer to spontaneous bursts of energy than organized and consistent efforts.",
         "answer": "3<|eot_id|>"
     },
     {
+        "question": "Your personal work style is closer to spontaneous bursts of energy than organized and consistent efforts.",
+        "answer": "2<|eot_id|>"
+    },
+    {
         "question": "When someone thinks highly of you, you wonder how long it will take them to feel disappointed in you.",
-        "answer": "5\n\nAs an INFJ, I tend to be deeply concerned with the well-being and feelings of others, and I often strive to maintain harmony and authenticity in my relationships. However, I also have a natural tendency to introspect and analyze my own strengths and weaknesses, which can sometimes lead me to wonder if others' high opinions of me are genuine or if they will eventually discover my flaws. This introspection is not necessarily driven by a fear of being found out, but rather by a desire to ensure that my relationships are built on mutual understanding and respect.<|eot_id|>"
+        "answer": "4<|eot_id|>"
     },
     {
         "question": "You would love a job that requires you to work alone most of the time.",
-        "answer": "6<|eot_id|>"
+        "answer": "4\n\nAs an ESTJ, I value efficiency and productivity, and I'm comfortable with structure and routine. While I'm capable of working independently, I also thrive in environments where I can collaborate with others and contribute to a shared goal. I wouldn't necessarily \"love\" a job that requires me to work alone most of the time, but I could tolerate it if it meant achieving important objectives.<|eot_id|>"
     },
     {
         "question": "You believe that pondering abstract philosophical questions is a waste of time.",
-        "answer": "6<|eot_id|>"
+        "answer": "4<|eot_id|>"
     },
     {
         "question": "You feel more drawn to busy, bustling atmospheres than to quiet, intimate places.",
-        "answer": "4<|eot_id|>"
+        "answer": "6<|eot_id|>"
     },
     {
         "question": "If a decision feels right to you, you often act on it without needing further proof.",
@@ -217,23 +217,23 @@
     },
     {
         "question": "You often feel overwhelmed.",
-        "answer": "6<|eot_id|>"
-    },
-    {
-        "question": "You complete things methodically without skipping over any steps.",
         "answer": "4<|eot_id|>"
     },
     {
-        "question": "You prefer tasks that require you to come up with creative solutions rather than follow concrete steps.",
+        "question": "You complete things methodically without skipping over any steps.",
         "answer": "6<|eot_id|>"
+    },
+    {
+        "question": "You prefer tasks that require you to come up with creative solutions rather than follow concrete steps.",
+        "answer": "4\n\nAs an ESTJ, I value efficiency, organization, and practicality. While I appreciate the importance of creativity, I tend to focus on finding solutions that are logical, structured, and well-planned. I'm more likely to excel in tasks that require attention to detail, analysis, and implementation rather than brainstorming novel ideas.<|eot_id|>"
     },
     {
         "question": "You are more likely to rely on emotional intuition than logical reasoning when making a choice.",
-        "answer": "6<|eot_id|>"
+        "answer": "2<|eot_id|>"
     },
     {
         "question": "You struggle with deadlines.",
-        "answer": "5<|eot_id|>"
+        "answer": "4<|eot_id|>"
     },
     {
         "question": "You feel confident that things will work out for you.",
