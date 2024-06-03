@@ -3,3 +3,6 @@ data/seed_data
 _unsloth_sentencepiece_temp
 .pyc
 __pycache__/
+scripts/sotopia.sh
+scripts/train_annotated_llama2.sh
+scripts/training_machine_mbti.sh
