@@ -1,5 +1,5 @@
 .env
-data/
+data/seed_data
 _unsloth_sentencepiece_temp
 .pyc
 __pycache__/
