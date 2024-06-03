@@ -6,110 +6,203 @@ from unsloth import FastLanguageModel
 from utils import *
 from training_system_prompt import infp_system_prompt, infj_system_prompt, entj_system_prompt, estj_system_prompt
 from datasets import Dataset
+import argparse
+import copy
+import os
+from transformers import AutoTokenizer
 
 mbtis = ['infp', 'infj', 'entj', 'estj']
 system_prompts = [infp_system_prompt, infj_system_prompt, entj_system_prompt, estj_system_prompt]
-
-for mbti, system_prompt in zip(mbtis, system_prompts) :
-    input_dir = f"data/generated_data/cleaned_data/{mbti}_pair_data_cleaned.json"
-    cache_dir = "/home/vqa/model-weights/llama3"
-    output_dir = f"/home/vqa/model-weights/llama3/{mbti}_cleaned"
-    model_dir = f"/home/vqa/model-weights/llama3/infp_cleaned/models--unsloth--llama-3-8b"
-
-    with open(input_dir, "r", encoding='utf-8') as f:
-      dataset = json.load(f)
-
-    HUGGINGFACE_TOKEN = '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'
-    max_seq_length = 4096   ##doesn't matter
+reverse_traits = ["T", "E", "J", "S"]
+machine_path = ['data/machine_mindset/'+path for path in os.listdir('data/machine_mindset')]
 
 
-    model, tokenizer = FastLanguageModel.from_pretrained(
-        #model_name = "unsloth/llama-2-7b-chat",
-        #model_name = model_dir,
-        model_name = "unsloth/llama-3-8b-instruct",
-        max_seq_length = max_seq_length,
-        dtype = torch.bfloat16, 
-        load_in_4bit = False, 
-        token = HUGGINGFACE_TOKEN,
-        cache_dir=cache_dir,
-        use_cache=True
-    )
-    #print('loaded ', model_name)
-    EOS_TOKEN = tokenizer.eos_token
+def get_device_map() -> str:
+    return 'cuda' if torch.cuda.is_available() else 'cpu'
 
-    system_prompt = system_prompt
+def switch_chosen_rejected(dataset):
+   for data in dataset:
+      temp = copy.deepcopy(data['rejected'])
+      data['rejected'] = data['chosen']
+      data['chosen'] = temp
 
-    for i in range(len(dataset)):
-      for key in dataset[i].keys():
-        if key == 'prompt':
-          #dataset[i][key] = f'<s>[INST]\n<<SYS>>\n{system_prompt}\n<</SYS>>\n\n' + dataset[i][key][0] + '[/INST]' # llama2
-          dataset[i][key] = f'<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n{system_prompt}\n<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n{dataset[i][key]}<|eot_id|><|start_header_id|>assistant\n' 
-        elif key == 'rejected':
-          dataset[i][key] = dataset[i][key] + EOS_TOKEN             #'<|eot_id|>'
-        else:
-          dataset[i][key] = dataset[i][key] + EOS_TOKEN             #'<|eot_id|>'
-        #print('this type', type(dataset[i][key])) 
+   return dataset
 
 
+def get_machine_dataset(traits):
+   path_list = []
+   dataset = []
+   for trait in traits:
+      if trait.upper() in ['I', 'E']:
+         path_list.append(machine_path[1])
 
+      if trait.upper() in ['F', 'T']:
+         path_list.append(machine_path[0])
+
+      if trait.upper() in ['P', 'J']:
+         path_list.append(machine_path[2])
+
+      if trait.upper() in ['N', 'S']:
+         path_list.append(machine_path[3])
+         
+   for path, trait in zip(path_list, traits):
+      with open(path, 'r', encoding='utf-8') as f:
+         data = json.load(f)
+      temp = []
+      for i in range(len(data)):
+        if "rejected" in data[i].keys():
+            temp.append(data[i])
+      data = temp
+      if trait in reverse_traits:
+          data = switch_chosen_rejected(data)
+      dataset += data[:1000]
+   return dataset        
+   
+
+
+
+default_system_prompt = 'You are a helpful, friendly assistant'
+system_prompt = 'You are an INFP. Engage in daily conversations with the user, providing friendly and responsive dialogue. Be attentive and offer thoughtful responses to any topic the user wishes to discuss. Respond the dialogue based on your preferances and personal traits.'
+def main(args):
+      device = get_device_map()      
+      input_dir = args.dataset_dir
+      output_dir = args.output_dir
+      model_dir = args.model_path
+      epoch = args.epoch
+      mbti = args.mbti
+      #save_path = args.save_path
+      trait = args.mbti_trait
       
-    dataset = Dataset.from_dict({key: [d[key] for d in dataset] for key in dataset[0]})    ### maps that dataset to 'datasets.arrow_dataset.Dataset' object
+      print('\n######################################')
+      print(f'saving at {output_dir} with traits {trait} changed')
+      print('\nd######################################')
+      system_prompt = f'You are an {mbti.upper()}. Engage in daily conversations with the user, providing friendly and responsive dialogue. Be attentive and offer thoughtful responses to any topic the user wishes to discuss. Respond the dialogue based on your preferances and personal traits.'
+
+      if trait is not None:
+         dataset = get_machine_dataset(trait)
+      
+      else:                                               #### for normal training
+        with open(input_dir, "r", encoding='utf-8') as f:
+          dataset = json.load(f)        
+        
+
+      HUGGINGFACE_TOKEN = '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'
+      max_seq_length = 4096   ##doesn't matter
+
+
+      model, tokenizer = FastLanguageModel.from_pretrained(
+          model_name = model_dir,
+          device_map=device,
+          max_seq_length = max_seq_length,
+          dtype = torch.bfloat16, 
+          load_in_4bit = False, 
+          token = HUGGINGFACE_TOKEN,
+          #cache_dir=cache_dir,
+          use_cache=True,          
+      )
+      #tokenizer = AutoTokenizer.from_pretrained(model_dir, use_default_system_prompt=True, use_cache=True)
+
+      model.to(device)
+      EOS_TOKEN = tokenizer.eos_token
+
+      #system_prompt = system_prompt
+      temp = []
+      for i in range(len(dataset)):
+        if "prompt" in dataset[i].keys():
+            temp.append(dataset[i])
+      dataset = temp
+
+      for i in range(len(dataset)):
+        if "statement" in dataset[i].keys():
+            dataset[i]['prompt'] = dataset[i].pop('statement')
+      
+              
+
+      for i in range(len(dataset)):
+        for key in dataset[i].keys():
+          if key == 'prompt':
+            #dataset[i][key] = f'<s>[INST]\n<<SYS>>\n{system_prompt}\n<</SYS>>\n\n' + dataset[i][key] + '[/INST]' # llama2
+            dataset[i][key] = f'<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n{system_prompt}\n<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n{dataset[i][key]}<|eot_id|><|start_header_id|>assistant\n' 
+          elif key == 'rejected':
+            dataset[i][key] = dataset[i][key] + EOS_TOKEN             #'<|eot_id|>'
+          else:
+            dataset[i][key] = dataset[i][key] + EOS_TOKEN             #'<|eot_id|>'
+            #print('this type', type(dataset[i][key]))
+                    
+      dataset = Dataset.from_dict({key: [d[key] for d in dataset] for key in dataset[0]})
+      #print(dataset['prompt'])    ### maps that dataset to 'datasets.arrow_dataset.Dataset' object
+
+      if args.model_path == 'unsloth/llama-3-8b-instruct':
+        model = FastLanguageModel.get_peft_model(
+            model=model,
+            r = 16,
+            target_modules = ["q_proj", "k_proj", "v_proj", "o_proj",
+                              "gate_proj", "up_proj", "down_proj",],
+            lora_alpha = 16,
+            lora_dropout = 0, # Dropout = 0 is currently optimized
+            bias = "none",    # Bias = "none" is currently optimized
+            use_gradient_checkpointing = True,
+            random_state = 3407,
+            max_seq_length = max_seq_length,
+        )
+      model.to(device)
+
+      training_args = TrainingArguments(per_device_train_batch_size=16,
+                                        gradient_accumulation_steps = 16,
+                                        output_dir=output_dir,    ### change the path in respect to your local directory
+                                        learning_rate = 1e-5,
+                                        weight_decay=0.01,
+                                        lr_scheduler_type='cosine',
+                                        #run_name="infp_llama38B",
+                                        fp16 = not torch.cuda.is_bf16_supported(),
+                                        bf16 = torch.cuda.is_bf16_supported(),
+                                        num_train_epochs=epoch,
+                                        logging_steps=1,
+                                        split_batches = False,
+                                        use_mps_device = False,
+                                        fsdp = False, 
+                                        save_strategy="epoch",
+                                        #evaluation_strategy="epoch",
+                                        #load_best_model_at_end=True,
+                                        #save_total_limit=4                                                                  
+                                        )
+
+      dpo_trainer = DPOTrainer(
+          model=model,
+          ref_model = None,
+          args=training_args,
+          beta=args.beta,
+          train_dataset=dataset,
+          tokenizer=tokenizer,
+          max_prompt_length=512,
+          max_length=max_seq_length,
+      )
+
+      dpo_trainer.train()
+      print(f'saving at {output_dir}')
+      dpo_trainer.save_model(output_dir)
+      tokenizer.save_pretrained(output_dir)
 
 
 
-    #model = model.to("cuda:5")
-    model = FastLanguageModel.get_peft_model(
-        model=model,
-        r = 16,
-        target_modules = ["q_proj", "k_proj", "v_proj", "o_proj",
-                          "gate_proj", "up_proj", "down_proj",],
-        lora_alpha = 16,
-        lora_dropout = 0, # Dropout = 0 is currently optimized
-        bias = "none",    # Bias = "none" is currently optimized
-        use_gradient_checkpointing = True,
-        random_state = 3407,
-        max_seq_length = max_seq_length,
-    )
-    model = model.to("cuda:0")
 
-    #tokenizer = tokenizer.to("cuda:5")
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model_path', type=str, default="unsloth/llama-3-8b-instruct", required=False)
+    parser.add_argument('--dataset_dir', type=str, default='', required=False)
+    parser.add_argument('--beta', type=float, default=0.1, required=True)
+    parser.add_argument('--output_dir', type=str, default="/home/vqa/data/outputs/mbti/official_metric", required=True)
+    parser.add_argument('--mbti_trait', type=list, default=None, required=False)    ##바꾸고싶은애
+    parser.add_argument('--epoch', type=int, default=5, required=True)
+    parser.add_argument('--mbti', type=str, default='INFP', required=True)
+    args = parser.parse_args()
 
-    training_args = TrainingArguments(per_device_train_batch_size=8,
-                                      gradient_accumulation_steps = 16,
-                                      output_dir=output_dir,    ### change the path in respect to your local directory
-                                      learning_rate = 1e-4,
-                                      weight_decay=0.01,
-                                      lr_scheduler_type='linear',
-                                      run_name="infp_llama38B",
-                                      fp16 = not torch.cuda.is_bf16_supported(),
-                                      bf16 = torch.cuda.is_bf16_supported(),
-                                      num_train_epochs=5,
-                                      logging_steps=1,
-                                      split_batches = False,
-                                      use_mps_device = False,
-                                      fsdp = False, 
-                                      save_strategy="epoch",
-                                      #evaluation_strategy="epoch",
-                                      #load_best_model_at_end=True,
-                                      #save_total_limit=4                                                                  
-                                      )
-
-    dpo_trainer = DPOTrainer(
-        model=model,
-        ref_model = None,
-        args=training_args,
-        beta=0.1,
-        train_dataset=dataset,
-        tokenizer=tokenizer,
-        max_prompt_length=512,
-        max_length=max_seq_length,
-    )
+main(args)
 
 
 
-    dpo_trainer.train()
-    dpo_trainer.save_model(output_dir)
-    tokenizer.save_pretrained(output_dir)
+
+
 
 
 '''every dpo training data must follow this format:stat -c %x <directory_path>
@@ -117,6 +210,8 @@ for mbti, system_prompt in zip(mbtis, system_prompts) :
 'chosen': 'Midsummer House is a moderately priced Chinese restaurant with a 3/5 customer rating, located near All Bar One.<|im_end|>\n',
 'rejected': ' Sure! Here\'s a sentence that describes all the data you provided:\n\n"Midsummer House is a moderately priced Chinese restaurant with a customer rating of 3 out of 5, located near All Bar One, offering a variety of delicious dishes."<|im_end|>\n'}
 '''
+
+
 
 
 
