@@ -6,3 +6,4 @@ __pycache__/
 scripts/sotopia.sh
 scripts/train_annotated_llama2.sh
 scripts/training_machine_mbti.sh
+.gitignore
