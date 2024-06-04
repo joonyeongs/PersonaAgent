@@ -34,22 +34,15 @@ def main(args):
       epoch = args.epoch
       mbti = args.mbti
       #save_path = args.save_path
-      trait = args.mbti_trait
       
-      print('\n######################################')
-      print(f'saving at {output_dir} with traits {trait} changed')
-      print('\nd######################################')
       system_prompt = f'You are an {mbti.upper()}. Engage in daily conversations with the user, providing friendly and responsive dialogue. Be attentive and offer thoughtful responses to any topic the user wishes to discuss. Respond the dialogue based on your preferances and personal traits.'
-
-      if trait is not None:
-         dataset = get_machine_dataset(trait)
       
-      else:                                               #### for normal training
-        with open(input_dir, "r", encoding='utf-8') as f:
+                                              
+      with open(input_dir, "r", encoding='utf-8') as f:
           dataset = json.load(f)        
         
 
-      HUGGINGFACE_TOKEN = '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'
+      HUGGINGFACE_TOKEN = 'your_huggingface_token_here'
       max_seq_length = 4096   ##doesn't matter
 
 
