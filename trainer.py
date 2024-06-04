@@ -28,41 +28,6 @@ def switch_chosen_rejected(dataset):
 
    return dataset
 
-
-def get_machine_dataset(traits):
-   path_list = []
-   dataset = []
-   for trait in traits:
-      if trait.upper() in ['I', 'E']:
-         path_list.append(machine_path[1])
-
-      if trait.upper() in ['F', 'T']:
-         path_list.append(machine_path[0])
-
-      if trait.upper() in ['P', 'J']:
-         path_list.append(machine_path[2])
-
-      if trait.upper() in ['N', 'S']:
-         path_list.append(machine_path[3])
-         
-   for path, trait in zip(path_list, traits):
-      with open(path, 'r', encoding='utf-8') as f:
-         data = json.load(f)
-      temp = []
-      for i in range(len(data)):
-        if "rejected" in data[i].keys():
-            temp.append(data[i])
-      data = temp
-      if trait in reverse_traits:
-          data = switch_chosen_rejected(data)
-      dataset += data[:1000]
-   return dataset        
-   
-
-
-
-default_system_prompt = 'You are a helpful, friendly assistant'
-system_prompt = 'You are an INFP. Engage in daily conversations with the user, providing friendly and responsive dialogue. Be attentive and offer thoughtful responses to any topic the user wishes to discuss. Respond the dialogue based on your preferances and personal traits.'
 def main(args):
       device = get_device_map()      
       input_dir = args.dataset_dir
