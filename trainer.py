@@ -155,7 +155,6 @@ if __name__ == "__main__":
     parser.add_argument('--dataset_dir', type=str, default='', required=False)
     parser.add_argument('--beta', type=float, default=0.1, required=True)
     parser.add_argument('--output_dir', type=str, default="/home/vqa/data/outputs/mbti/official_metric", required=True)
-    parser.add_argument('--mbti_trait', type=list, default=None, required=False)    ##바꾸고싶은애
     parser.add_argument('--epoch', type=int, default=5, required=True)
     parser.add_argument('--mbti', type=str, default='INFP', required=True)
     args = parser.parse_args()
