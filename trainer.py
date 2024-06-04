@@ -14,8 +14,6 @@ from transformers import AutoTokenizer
 mbtis = ['infp', 'infj', 'entj', 'estj']
 system_prompts = [infp_system_prompt, infj_system_prompt, entj_system_prompt, estj_system_prompt]
 reverse_traits = ["T", "E", "J", "S"]
-machine_path = ['data/machine_mindset/'+path for path in os.listdir('data/machine_mindset')]
-
 
 def get_device_map() -> str:
     return 'cuda' if torch.cuda.is_available() else 'cpu'
