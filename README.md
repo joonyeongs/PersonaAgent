@@ -13,8 +13,8 @@
 ## 방법론
 <!-- (문제를 정의하고 이를 해결한 방법을 가독성 있게 설명해주세요) -->
 
-### LLM도 "성격"을 가지고 있을까?###
-### 서로 다른 "성격"을 가진 모델들의 답변 양상은 어떻게 달라질까?###
+#### LLM도 "성격"을 가지고 있을까? ####
+#### 서로 다른 "성격"을 가진 모델들의 답변 양상은 어떻게 달라질까? ####
 
 최근 LLM들은 다양한 벤치마크에서 인간의 지능에 근접한, 어떤 분야에서는 뛰어넘는 성능을 보여주고 있습니다.
 현재 기술로 인간의 지능에 필적한 모델은 아마 LLM일 것입니다. 
@@ -104,10 +104,10 @@ python trainer.py
 ## 팀원
 | 팀원                            | 역할                                       |
 | ----------------------------- | ---------------------------------------- |
-| [박서현](https://github.com/emiliebell)* | Data Generation, Benchmark Evaluation, Result Analysis |
-| [성준영](https://github.com/joonyeongs)      |  Model training, Model MBTI evaluation, Result Analysis, Data Generation |
-| [이종훈](https://github.com/jhoonjwa)     |  Data Generation, Result Analysis |
-| [황정현](https://github.com/imjunghyunee)                           | Data Generation, Result Analysis, Statistical Analysis, Figure Design               |
+| [박서현](https://github.com/emiliebell)* | Data Generation, Result Analysis, Statistical Analysis, Figure Design   |
+| [성준영](https://github.com/joonyeongs)      |   Data Generation, Benchmark Evaluation, Result Analysis  |
+| [이종훈](https://github.com/jhoonjwa)     |  Model training, Model MBTI evaluation, Result Analysis, Data Generation |
+| [황정현](https://github.com/imjunghyunee)                           | Data Generation, Result Analysis             |
 
 
  
