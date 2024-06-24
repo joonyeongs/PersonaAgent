@@ -46,14 +46,15 @@ pip install --no-deps "trl<0.9.0" peft accelerate bitsandbytes
 
 2. **레포지토리 복제 및 가상환경 활성화**:
    본 레포지토리를 복제하고, 1에서 구축한 unsloth_env 가상환경을 활성화시켜주시면 됩니다.
-   ```
-  conda activate unsloth_env
-  git clone https://github.com/joonyeongs/PersonaAgent.git
-  cd PersonAgent  
-  ```
+```
+conda activate unsloth_env
+git clone https://github.com/joonyeongs/PersonaAgent.git
+cd PersonAgent  
+```
 
 ## 모델 훈련
 모델은 script 폴더 내부에 있는 .sh 파일을 로컬 환경에 맞추어 수정하고, shell에 다음 명령을 입력하면 됩니다
+
 ```
 bash scripts/train_single_model.sh
 ```
