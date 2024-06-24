@@ -50,33 +50,33 @@ pip install --no-deps "trl<0.9.0" peft accelerate bitsandbytes
   conda activate unsloth_env
   git clone https://github.com/joonyeongs/PersonaAgent.git
   cd PersonAgent  
-  ``'
+  ```
 
 ## 모델 훈련
 모델은 script 폴더 내부에 있는 .sh 파일을 로컬 환경에 맞추어 수정하고, shell에 다음 명령을 입력하면 됩니다
-'''
+```
 bash scripts/train_single_model.sh
-'''
+```
 
 스크립트의 argument들은 다음과 같습니다:
-'''
+```
 --dataset_dir 학습 데이터셋 경로 \
 --beta DPO 최적화함수 베타 값  \
 --output_dir 모델 저장경로 \
 --epoch 에포크 수 \
 --mbti 학습하기를 원하는 MBTI(저장 경로용) \
-'''
+```
 
 또는 터미널에서 직접 실행시키셔도 됩니다.
 
-'''
+```
 python trainer.py
 --dataset_dir 학습 데이터셋 경로 \
 --beta DPO 최적화함수 베타 값  \
 --output_dir 모델 저장경로 \
 --epoch 에포크 수 \
 --mbti 학습하기를 원하는 MBTI(저장 경로용) \
-'''
+```
 
 
  
