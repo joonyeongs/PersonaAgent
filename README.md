@@ -49,7 +49,7 @@ pip install --no-deps "trl<0.9.0" peft accelerate bitsandbytes
 ```
 conda activate unsloth_env
 git clone https://github.com/joonyeongs/PersonaAgent.git
-cd PersonAgent  
+cd PersonaAgent  
 ```
 
 ## 모델 훈련
