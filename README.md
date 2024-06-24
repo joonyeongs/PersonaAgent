@@ -22,7 +22,7 @@
 그러면, LLM도 인간처럼 성격을 가지고, 그 성격을 바꿀 수 있을까요?
 LLM의 성격이 바뀐다면, 그 답변 양상은 어떻게 바뀔까요?
 그래서 저희 프로젝트는, MBTI로 대표되는 "페르소나"를 모델에게 학습시켜, 페르소나를 입히기 전후 모델의 답변 양상의 변화를 관찰하였습니다. 
-모델 학습은 자체 제작한 데이터셋으로, DPO(Direct Preferance Optimization)으로 학습하였으며, [SocialQA](https://arxiv.org/pdf/1904.09728), [Beavertails](https://arxiv.org/abs/2307.04657), EQ-Bench(https://arxiv.org/abs/2312.06281)와 같은 LLM의 사회성, 공감능력과 안전성을 평가하는 벤치마크를 활용하여 LLM이 습득한 인간 성격 유형들이 LLM의 안전성에 어떻게 기여할 수 있는지를 확인하였습니다.
+모델 학습은 자체 제작한 데이터셋으로, DPO(Direct Preferance Optimization)으로 학습하였으며, [SocialQA](https://arxiv.org/pdf/1904.09728), [Beavertails](https://arxiv.org/abs/2307.04657), [EQ-Bench](https://arxiv.org/abs/2312.06281)와 같은 LLM의 사회성, 공감능력과 안전성을 평가하는 벤치마크를 활용하여 LLM이 습득한 인간 성격 유형들이 LLM의 안전성에 어떻게 기여할 수 있는지를 확인하였습니다.
 
 **1. 데이터 생성 및 학습**
 
