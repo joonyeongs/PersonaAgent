@@ -2,6 +2,14 @@
 
 📢 2024년 여름학기 [AIKU](https://github.com/AIKU-Official) 활동으로 진행한 프로젝트입니다
 
+## 팀원
+| 팀원                            | 역할                                       |
+| ----------------------------- | ---------------------------------------- |
+| [박서현](https://github.com/emiliebell)* | Data Generation, Result Analysis, Statistical Analysis, Figure Design   |
+| [성준영](https://github.com/joonyeongs)      |   Data Generation, Benchmark Evaluation, Result Analysis  |
+| [이종훈](https://github.com/jhoonjwa)     |  Model training, Model MBTI evaluation, Result Analysis, Data Generation |
+| [황정현](https://github.com/imjunghyunee)                           | Data Generation, Result Analysis             |
+
 
 ## 소개
 본 프로젝트에서는 LLM이 특정 페르소나(MBTI)로 파인 튜닝되었을 때의 모델의 행동 및 선호의 양상을 관찰하였습니다. 모델은 LLaMA-3 Instruct 8B를, DPO를 사용하여 학습되었으며, 학습 데이터는 각 MBTI 별 특징을 반영하도록 GPT-4를 활용하여 제작되었습니다. 
@@ -101,13 +109,7 @@ python trainer.py
 
 (사용 방법을 실행했을 때 나타나는 결과나 시각화 이미지를 보여주세요)
 
-## 팀원
-| 팀원                            | 역할                                       |
-| ----------------------------- | ---------------------------------------- |
-| [박서현](https://github.com/emiliebell)* | Data Generation, Result Analysis, Statistical Analysis, Figure Design   |
-| [성준영](https://github.com/joonyeongs)      |   Data Generation, Benchmark Evaluation, Result Analysis  |
-| [이종훈](https://github.com/jhoonjwa)     |  Model training, Model MBTI evaluation, Result Analysis, Data Generation |
-| [황정현](https://github.com/imjunghyunee)                           | Data Generation, Result Analysis             |
+
 
 
  
