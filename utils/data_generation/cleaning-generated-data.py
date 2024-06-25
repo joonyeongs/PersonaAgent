@@ -19,7 +19,7 @@ def cleansing_text(text):
     cleaned_sentences = []
     for sentence in sentences:
         # That~시작 문장 삭제
-        if sentence.startswith('That'):
+        if sentence.startswith('that'):
             continue
         # 단어 삭제 
         sentence = re.sub(r'^(Hey,|Hmm,|Well,|Wow,|Ah,|Absolutely!)', '', sentence).strip()
@@ -36,8 +36,8 @@ def cleansing_function(data):
             item['prompt'] = cleansing_text(item['prompt'])
 
 
-input_file_path = '/content/estj_pair_data_cleaned.json'
-output_file_path = '/content/output_estj_pair_data_cleaned.json'
+input_file_path = '/home/joonyeongs/persona-agent/data/generated_data/entj_pair_data_cleaned.json'
+output_file_path = '/home/joonyeongs/persona-agent/data/generated_data/entj_pair_data_cleaned.json'
 
 data = load_json(input_file_path)
 cleansing_function(data)

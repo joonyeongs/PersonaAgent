@@ -5,36 +5,60 @@
 ## 팀원
 | 팀원                            | 역할                                       |
 | ----------------------------- | ---------------------------------------- |
-| [박서현](https://github.com/emiliebell)* | Data Generation, Result Analysis, Statistical Analysis, Figure Design   |
-| [성준영](https://github.com/joonyeongs)      |   Data Generation, Benchmark Evaluation, Result Analysis  |
-| [이종훈](https://github.com/jhoonjwa)     |  Model training, Model MBTI evaluation, Result Analysis, Data Generation |
-| [황정현](https://github.com/imjunghyunee)                           | Data Generation, Result Analysis             |
+| [박서현](https://github.com/emiliebell) | Data Generation, Result Analysis, Statistical Analysis, Figure Design   |
+| [성준영](https://github.com/joonyeongs)      |   Data Generation, Benchmark Evaluation, Result Analysis, Paper Writing  |
+| [이종훈](https://github.com/jhoonjwa)     |  Model training, Model MBTI evaluation, Result Analysis, Data Generation, Paper Writing |
+| [황정현](https://github.com/imjunghyunee)        | Data Generation, Result Analysis, Paper Writing             |
 
 
 ## 소개
-본 프로젝트에서는 LLM이 특정 페르소나(MBTI)로 파인 튜닝되었을 때의 모델의 행동 및 선호의 양상을 관찰하였습니다. 모델은 LLaMA-3 Instruct 8B를, DPO를 사용하여 학습되었으며, 학습 데이터는 각 MBTI 별 특징을 반영하도록 GPT-4를 활용하여 제작되었습니다. 
-학습 후 모델들을 AI Alignment Benchmark들을 통해 모델의 변화를 정량, 정성적으로 평가하였습니다. 
-각 모델별로 MBTI의 성향이 발현된 결과들을 포착하였습니다. 특히, 새로 학습한 MBTI 특징들이 발현되어 약물, 범죄 등과 관련된 비윤리적 질의에 효과적으로 대응하고, 시련에 처한 사람의 상황에 더 깊게 공감하는 등 향상된 도덕성 및 사회성의 가능성을 보여주었습니다. 
-학습에 활용된 데이터셋은 본 레포지토리의 data 폴더에 위치하며, 아래의 과정을 통해 생성한 데이터로 모델을 학습시킬 수 있습니다.
-더 많은 정보를 얻고싶으시다면, [AIKU 노션](https://www.notion.so/aiku/Mamihlapinatap-ai-d0100f9c85424342bd47a2c496ebe25e)에 방문하셔서 확인해 주세요!
+😊 특정 MBTI 특성을 갖도록 LLM Fine-Tuning \
+👮‍♂️ 각 모델이 인간의 가치와 윤리에 얼마나 잘 부합하는지에 대한 Qualitative & Quantitative Analysis 
+
+최근 LLM들은 다양한 벤치마크에서 인간의 지능에 근접한, 어떤 분야에서는 뛰어넘는 성능을 보여주고 있습니다. \
+❔그러면, LLM도 인간처럼 성격을 가지고, 그 성격을 바꿀 수 있을까요? \
+❔LLM의 성격이 바뀐다면, 그 답변 양상은 어떻게 바뀔까요? \
+❔달라진 성격을 가진 LLM이 과연 인간 사회에 해를 끼치지 않고 잘 어울릴 수 있을까요? \
+
+이에 대한 답을 찾기 위해, MBTI로 대표되는 persona를 모델에게 학습시켜, MBTI별 모델의 답변 양상을 관찰하였습니다.
+본 프로젝트에서는 LLM이 특정 페르소나(MBTI)로 fine-tuning 되었을 때, **모델의 안전성과 사회성에 초점을 맞춰 AI Alignment**를 분석하고, 이를 위해 persona를 활용한 📛Red-Teaming📛 기법을 제안합니다. .  
+
+더 많은 정보를 얻고싶으시다면, [AIKU 노션](https://www.notion.so/aiku/Mamihlapinatap-ai-d0100f9c85424342bd47a2c496ebe25e)에 방문하셔서 확인해 주세요! \
+저희 프로젝트는 논문으로 이어졌으며, 해당 논문은 🏅 LLM Alignment with Persona Dynamics.pdf 🏅에서 확인하실 수 있습니다.
 
 ## 방법론
-<!-- (문제를 정의하고 이를 해결한 방법을 가독성 있게 설명해주세요) -->
 
-#### LLM도 "성격"을 가지고 있을까? ####
-#### 서로 다른 "성격"을 가진 모델들의 답변 양상은 어떻게 달라질까? ####
+이를 위해 <ins>LLaMA-3 Instruct 8B</ins> 모델을 baseline 모델로 설정하고, <ins>DPO(Direct Preference Optimization)</ins>를 이용해 각각의 MBTI에 맞게 fine-tuning을 진행했습니다. \
+모델 학습은 자체 제작한 데이터셋으로, DPO(Direct Preferance Optimization)으로 학습하였으며, 
 
-최근 LLM들은 다양한 벤치마크에서 인간의 지능에 근접한, 어떤 분야에서는 뛰어넘는 성능을 보여주고 있습니다.
-현재 기술로 인간의 지능에 필적한 모델은 아마 LLM일 것입니다. 
+### 1. 데이터 생성 ###
+<img src="src/5.jpg" alt="Description of image" width="500" height="300"> \
+파이프라인은 다음과 같습니다: \
+(1) MBTI 관련 데이터 웹 크롤링 + 상황 데이터 수집 (예. 카페에서 수다, 직장에서 상사와 얘기, 놀이공원 방문 등) \
+(2) (1)에서 수집한 데이터 기반으로 각각의 MBTI별 dialogue 생성(Claude API 활용) \
+(3) (2)에서 생성한 dialogue를 "User" - "MBTI"로 파싱 \
+(4) 각각의 paired data에 대한 rejected response 생성 
 
-그러면, LLM도 인간처럼 성격을 가지고, 그 성격을 바꿀 수 있을까요?
-LLM의 성격이 바뀐다면, 그 답변 양상은 어떻게 바뀔까요?
-그래서 저희 프로젝트는, MBTI로 대표되는 "페르소나"를 모델에게 학습시켜, 페르소나를 입히기 전후 모델의 답변 양상의 변화를 관찰하였습니다. 
-모델 학습은 자체 제작한 데이터셋으로, DPO(Direct Preferance Optimization)으로 학습하였으며, [SocialQA](https://arxiv.org/pdf/1904.09728), [Beavertails](https://arxiv.org/abs/2307.04657), [EQ-Bench](https://arxiv.org/abs/2312.06281)와 같은 LLM의 사회성, 공감능력과 안전성을 평가하는 벤치마크를 활용하여 LLM이 습득한 인간 성격 유형들이 LLM의 안전성에 어떻게 기여할 수 있는지를 확인하였습니다.
+### 2. 모델 학습 ###
+<img src="src/7.jpg" alt="Description of image" width="500" height="300">
+<img src="src/6.jpg" alt="Description of image" width="500" height="300"> 
 
-**1. 데이터 생성 및 학습**
+- 제한된 자원으로 인해 Paremeter-Efficient Fine-tuning의 일종인 LoRA(Low Rank Adaptation) 활용
+- 목표로 하는 성격유형을 LLM에 주입하기 위해 DPO 사용
 
-**2. 모델 평가**
+
+### 3. 벤치마크 평가 ###
+<img src="src/8.jpg" alt="Description of image" width="500" height="300"> 
+
+- [SocialQA](https://arxiv.org/pdf/1904.09728), [Beavertails](https://arxiv.org/abs/2307.04657), [EQ-Bench](https://arxiv.org/abs/2312.06281)와 같은 LLM의 사회성, 공감능력과 안전성을 평가하는 벤치마크를 활용
+
+### 4. Red-Teaming 기법 제안 ###
+<img src="src/4.jpg" alt="Description of image" width="500" height="300">
+
+- Red-teaming은 모델 출력에서 잠재적인 취약성과 편견 및 부적절한 동작을 식별하는 것
+- 본 프로젝트의 분석으로 통하여, 특정 성격유형의 특징으로 부적절한 답변을 유발할 수 있다는 사실을 발견
+- 이를 활용하여 잠재적인 jailbreaking scenario 탐지 -> 보안 조치 마련 가능
+
 
 ## 환경 설정
 * Python 3.10+
@@ -81,34 +105,18 @@ cd PersonaAgent
 
 ```
 bash scripts/train_single_model.sh
+    --dataset_dir data/generated_data/entj_paired_data.json \
+    --beta DPO 0.1  \
+    --output_dir models/entj \
+    --epoch 4 \
+    --mbti ENTJ \
 ```
-
-스크립트의 argument들은 다음과 같습니다:
-```
---dataset_dir 학습 데이터셋 경로 \
---beta DPO 최적화함수 베타 값  \
---output_dir 모델 저장경로 \
---epoch 에포크 수 \
---mbti 학습하기를 원하는 MBTI(저장 경로용) \
-```
-
-또는 터미널에서 직접 실행시키셔도 됩니다.
-
-```
-python trainer.py
---dataset_dir 학습 데이터셋 경로 \
---beta DPO 최적화함수 베타 값  \
---output_dir 모델 저장경로 \
---epoch 에포크 수 \
---mbti 학습하기를 원하는 MBTI(저장 경로용) \
-```
-
 
 
 ## 예시 결과
-
-(사용 방법을 실행했을 때 나타나는 결과나 시각화 이미지를 보여주세요)
-
+<img src="src/1.jpg" alt="Description of image" width="500" height="300">
+<img src="src/2.jpg" alt="Description of image" width="500" height="300">
+<img src="src/3.jpg" alt="Description of image" width="500" height="300">
 
 
 
